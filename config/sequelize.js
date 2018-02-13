@@ -7,7 +7,10 @@ const base = {
 };
 
 module.exports = {
-  test:        base,
+  test: {
+    ...base,
+    logging: false
+  },
   development: base,
   production:  base,
 };

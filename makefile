@@ -1,36 +1,31 @@
-CONFIG_DEV = docker-compose.dev.yml
-CONFIG_TEST = docker-compose.test.yml
+CONFIG_FILE_DEV = docker-compose.dev.yml
+CONFIG_FILE_TEST = docker-compose.test.yml
+
+PROJECT_NAME_DEV = dev
+PROJECT_NAME_TEST = test
 
 APP_CONTAINER = deploydockernode_app_1
 
-all: dev
+all: dev-log
 
-run:
-	docker-compose -f $(FILE) up -d --build
+cleandb:
+	rm -rf pgdata-development pgdata-test
 
-log:
-	docker-compose -f $(FILE) logs -f
+resetdb: dev-down cleandb dev-run
+	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app \
+		./wait-for pg:5432 -- \
+			yarn run sequelize db:migrate && \
+			yarn run sequelize db:seed:all
 
-down:
-	docker-compose -f $(FILE) down
+dev-run:
+	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) up -d --build
 
-dev: FILE = $(CONFIG_DEV)
-dev: run log
+dev-log: dev-run
+	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) logs -f
 
-dev-down: FILE = $(CONFIG_DEV)
-dev-down: down
+dev-down:
+	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) down
 
-test: FILE = $(CONFIG_TEST)
-test: run log
-
-test-down: FILE = $(CONFIG_TEST)
-test-down: down
-
-db-migrate:
-	docker exec $(APP_CONTAINER) yarn run sequelize db:migrate
-
-db-seed:
-	docker exec $(APP_CONTAINER) yarn run sequelize db:seed:all
-
-db-seed-undo:
-	docker exec $(APP_CONTAINER) yarn run sequelize db:seed:undo:all
+test:
+	docker-compose -f $(CONFIG_FILE_TEST) -p $(PROJECT_NAME_TEST) build && \
+	docker-compose -f $(CONFIG_FILE_TEST) -p $(PROJECT_NAME_TEST) run app

@@ -11,7 +11,7 @@
     "dev": "NODE_PATH=. nodemon --inspect=0.0.0.0:1337 index.js",
     "start": "NODE_PATH=. node index.js",
     "lint": "eslint .",
-    "test": "NODE_PATH=. jest --watchAll"
+    "test": "NODE_PATH=. jest --watch"
   },
   "dependencies": {
     "express": "^4.16.2",

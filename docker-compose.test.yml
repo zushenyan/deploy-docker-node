@@ -4,9 +4,6 @@ services:
     build: .
     volumes:
       - .:/usr/app
-    ports:
-      - '8080:8080'
-      - '1337:1337'
     depends_on:
       - pg
     environment:
@@ -16,6 +13,8 @@ services:
       SEQUELIZE_DB: "mydb_test"
       SEQUELIZE_HOST: "pg"
     command: yarn run test
+    tty: true
+    stdin_open: true
   pg:
     image: postgres:10.2-alpine
     volumes:

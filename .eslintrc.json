@@ -4,7 +4,14 @@
     "es6": true
   },
   "parserOptions": {
-    "ecmaVersion": 8
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "globalReturn": true,
+      "impliedStrict": true,
+      "experimentalObjectRestSpread": true
+    }
   },
   "extends": [
     "eslint:recommended",

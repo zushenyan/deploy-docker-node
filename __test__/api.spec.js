@@ -30,8 +30,9 @@ describe('testing API', () => {
     it('should return fixed data', async () => {
       await request
         .get('/api')
-        .expect((res) => {
-          expect(res).toMatchSnapshot();
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toMatchSnapshot();
         });
     });
   });
