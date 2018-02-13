@@ -1,0 +1,26 @@
+version: '3.5'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/usr/app
+    ports:
+      - '8080:8080'
+      - '1337:1337'
+    depends_on:
+      - pg
+    environment:
+      NODE_ENV: "test"
+      SEQUELIZE_USER: "andrewyan"
+      SEQUELIZE_PASSWORD: "123456"
+      SEQUELIZE_DB: "mydb_test"
+      SEQUELIZE_HOST: "pg"
+    command: yarn run test
+  pg:
+    image: postgres:10.2-alpine
+    volumes:
+      - ./pgdata-test:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_USER: "andrewyan"
+      POSTGRES_DB: "mydb_test"

@@ -1,2 +1,4 @@
+.git
 node_modules
-pgdata
+pgdata-development
+pgdata-test

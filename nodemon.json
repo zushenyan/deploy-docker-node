@@ -1,0 +1,10 @@
+{
+  "ignore": [
+    ".git",
+    "node_modules",
+    "pgdata"
+  ],
+  "events": {
+    "restart": "yarn run lint"
+  }
+}

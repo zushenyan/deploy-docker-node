@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing API /api should return fixed data 1`] = `
+Object {
+  "header": Object {
+    "connection": "close",
+    "content-length": "1118",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Tue, 13 Feb 2018 09:51:23 GMT",
+    "etag": "W/\\"45e-nS7dyeD200mamhlh5+BovPx0GcY\\"",
+    "x-powered-by": "Express",
+  },
+  "req": Object {
+    "data": undefined,
+    "headers": Object {
+      "user-agent": "node-superagent/3.8.2",
+    },
+    "method": "GET",
+    "url": "http://127.0.0.1:33781/api",
+  },
+  "status": 200,
+  "text": "[{\\"id\\":0,\\"name\\":\\"Lilly Schumm III\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":1,\\"name\\":\\"Olen Satterfield\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":2,\\"name\\":\\"Camilla Gorczany\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":3,\\"name\\":\\"Raul Williamson Sr.\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":4,\\"name\\":\\"Florencio Ankunding\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":5,\\"name\\":\\"Marjory Harber\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":6,\\"name\\":\\"Furman Boyle\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":7,\\"name\\":\\"Jo Kiehn\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":8,\\"name\\":\\"Dr. Oliver Green\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"},{\\"id\\":9,\\"name\\":\\"Myron Morar\\",\\"createdAt\\":\\"2018-02-13T09:51:23.136Z\\",\\"updatedAt\\":\\"2018-02-13T09:51:23.136Z\\"}]",
+}
+`;
