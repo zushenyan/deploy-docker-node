@@ -5,7 +5,7 @@ const { User } = require('./models');
 const server =
   express()
     .use(morgan('dev'))
-    .use('/api', async (req, res) => {
+    .use('/', async (req, res) => {
       try {
         const result  = await User.findAll();
         const payload = result.map(row => row.get());

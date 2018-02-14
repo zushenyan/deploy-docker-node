@@ -4,8 +4,8 @@ services:
     build: .
     volumes:
       - .:/usr/app
-    ports:
-      - '8080~:8080'
+    expose:
+      - 8080
     environment:
       NODE_ENV: "production"
       SEQUELIZE_USER: "andrewyan"
@@ -13,8 +13,6 @@ services:
       SEQUELIZE_DB: "mydb_production"
       SEQUELIZE_HOST: "pg"
     command: yarn run start
-    deploy:
-      replicas: 2
   pg:
     image: postgres:10.2-alpine
     volumes:
@@ -25,7 +23,7 @@ services:
       POSTGRES_DB: "mydb_production"
   nginx:
     build:
-      context: ./nginx
-      dockerfile: Dockefile
+      context: ./nginx/prod
+      dockerfile: Dockerfile
     ports:
       - '80:80'

@@ -26,3 +26,17 @@ services:
       POSTGRES_PASSWORD: "123456"
       POSTGRES_USER: "andrewyan"
       POSTGRES_DB: "mydb_development"
+  pg_test:
+    image: postgres:10.2-alpine
+    volumes:
+      - ./pgdata-test:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_USER: "andrewyan"
+      POSTGRES_DB: "mydb_test"
+  nginx:
+    build:
+      context: ./nginx/dev
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"

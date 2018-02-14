@@ -1,7 +1,7 @@
 const { times }     = require('lodash');
 const supertest     = require('supertest');
 
-const server        = require('server.js');
+const server        = require('app.js');
 const faker         = require('utils/faker.js');
 const { sequelize } = require('models');
 

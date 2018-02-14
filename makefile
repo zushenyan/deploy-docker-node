@@ -1,30 +1,33 @@
 CONFIG_FILE_DEV = docker-compose.dev.yml
-CONFIG_FILE_TEST = docker-compose.test.yml
+CONFIG_FILE_PROD = docker-compose.prod.yml
 
 PROJECT_NAME_DEV = dev
-PROJECT_NAME_TEST = test
+PROJECT_NAME_PROD = prod
 
-all: dev
+all: up sh
+
+prune:
+	yes | docker system prune -a && yes | docker volume prune
 
 cleandb:
 	rm -rf pgdata-development pgdata-test
 
-resetdb: dev-down cleandb dev-build
+resetdb: down cleandb up
 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app \
 		sh -c \
 			"./scripts/wait-for pg:5432 -- \
 			yarn run sequelize db:migrate && \
 			yarn run sequelize db:seed:all"
 
-dev-build:
+up:
 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) up -d --build
 
-dev: dev-build
+sh:
 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app /bin/sh
 
-dev-down:
+down:
 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) down
 
-test:
-	docker-compose -f $(CONFIG_FILE_TEST) -p $(PROJECT_NAME_TEST) build && \
-	docker-compose -f $(CONFIG_FILE_TEST) -p $(PROJECT_NAME_TEST) run app
+push:
+	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) up -d --build && \
+	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) push
