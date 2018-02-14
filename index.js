@@ -1,17 +1,30 @@
-const server        = require('./server');
-// const { sequelize } = require('models');
+const app           = require('./app');
+const { sequelize } = require('models');
 
 const PORT = process.env.PORT || 8080;
 
-server.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`listening on port ${PORT}...`);
 });
 
 const handleShutdown = (err) => {
-  if (err) console.log(err);
-  console.log('server is closing...');
-  server.close(() => {
-    console.log('server closed...');
+  console.log('closing server...');
+  if (err) {
+    console.log('something went wrong while closing:');
+    console.log(err);
+    process.exit(1);
+  }
+  server.close(async () => {
+    try {
+      console.log('closing DB...');
+      await sequelize.close();
+      console.log('DB closed.');
+    } catch (e) {
+      console.log(e);
+    } finally {
+      console.log('server closed.');
+      process.exit(0);
+    }
   });
 };
 
