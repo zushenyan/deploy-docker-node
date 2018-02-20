@@ -9,8 +9,11 @@ const base = {
 module.exports = {
   test: {
     ...base,
-    logging: false
+    logging: false,
   },
   development: base,
-  production:  base,
+  production: {
+    ...base,
+    logging: false,
+  },
 };

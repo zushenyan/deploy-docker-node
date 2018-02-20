@@ -1,8 +1,8 @@
 CONFIG_FILE_DEV = docker-compose.dev.yml
 CONFIG_FILE_PROD = docker-compose.prod.yml
 
-PROJECT_NAME_DEV = dev
-PROJECT_NAME_PROD = prod
+PROJECT_NAME_DEV = ddndev
+PROJECT_NAME_PROD = ddn
 
 all: up sh
 
@@ -29,5 +29,8 @@ down:
 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) down
 
 push:
-	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) up -d --build && \
+	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) build && \
 	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) push
+
+down-prod:
+	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) down
