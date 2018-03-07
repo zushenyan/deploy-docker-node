@@ -1,36 +1,53 @@
-CONFIG_FILE_DEV = docker-compose.dev.yml
-CONFIG_FILE_PROD = docker-compose.prod.yml
+all:
+	make build && \
+	make clean; \
+	make run
 
-PROJECT_NAME_DEV = ddndev
-PROJECT_NAME_PROD = ddn
+ssh:
+	kubectl exec -it $(shell kubectl get pods -l apps=ddn -o name --field-selector=status.phase==Running | sed 's/pods\///') sh
 
-all: up sh
+build:
+	docker build -t ddn .
 
-prune:
-	yes | docker system prune -a && yes | docker volume prune
+run:
+	kubectl create -f kube-dev.yml
 
-cleandb:
-	rm -rf pgdata-development pgdata-test
+clean:
+	kubectl delete services,deployments ddn
 
-resetdb: down cleandb up
-	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app \
-		sh -c \
-			"./scripts/wait-for pg:5432 -- \
-			yarn run sequelize db:migrate && \
-			yarn run sequelize db:seed:all"
+# CONFIG_FILE_DEV = docker-compose.dev.yml
+# CONFIG_FILE_PROD = docker-compose.prod.yml
 
-up:
-	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) up -d --build
+# PROJECT_NAME_DEV = ddndev
+# PROJECT_NAME_PROD = ddn
 
-sh:
-	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app /bin/sh
+# all: up sh
 
-down:
-	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) down
+# prune:
+# 	yes | docker system prune -a && yes | docker volume prune
 
-push:
-	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) build && \
-	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) push
+# cleandb:
+# 	rm -rf pgdata-development pgdata-test
 
-down-prod:
-	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) down
+# resetdb: down cleandb up
+# 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app \
+# 		sh -c \
+# 			"./scripts/wait-for pg:5432 -- \
+# 			yarn run sequelize db:migrate && \
+# 			yarn run sequelize db:seed:all"
+
+# up:
+# 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) up -d --build
+
+# sh:
+# 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app /bin/sh
+
+# down:
+# 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) down
+
+# push:
+# 	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) build && \
+# 	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) push
+
+# down-prod:
+# 	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) down
