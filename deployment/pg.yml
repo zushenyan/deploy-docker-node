@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pg
+spec:
+  selector:
+    matchLabels:
+      app: pg
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pg
+    spec:
+      containers:
+        - name: pg
+          image: postgres:10.2-alpine
+          env:
+            - name: POSTGRES_USER
+              value: andrewyan
+            - name: POSTGRES_PASSWORD
+              value: "123456"
+            - name: POSTGRES_DB
+              value: mydb_production
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-service
+spec:
+  selector:
+    app: app
+  ports:
+    - name: pg
+      port: 5432
+      targetPort: 5432
+      protocol: TCP

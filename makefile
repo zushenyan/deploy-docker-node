@@ -1,53 +1,37 @@
-all:
-	make build && \
-	make clean; \
-	make run
+# all:
+# 	make build && \
+# 	make clean; \
+# 	make run
 
-ssh:
-	kubectl exec -it $(shell kubectl get pods -l apps=ddn -o name --field-selector=status.phase==Running | sed 's/pods\///') sh
+# ssh:
+# 	kubectl exec -it $(shell kubectl get pods -l apps=ddn -o name --field-selector=status.phase==Running | sed 's/pods\///') sh
 
-build:
-	docker build -t ddn .
+# build:
+# 	docker build -t ddn .
 
-run:
-	kubectl create -f kube-dev.yml
+# run:
+# 	kubectl create -f kube-dev.yml
 
-clean:
-	kubectl delete services,deployments ddn
-
-# CONFIG_FILE_DEV = docker-compose.dev.yml
-# CONFIG_FILE_PROD = docker-compose.prod.yml
-
-# PROJECT_NAME_DEV = ddndev
-# PROJECT_NAME_PROD = ddn
-
-# all: up sh
+# clean:
+# 	kubectl delete services,deployments ddn
 
 # prune:
 # 	yes | docker system prune -a && yes | docker volume prune
 
-# cleandb:
-# 	rm -rf pgdata-development pgdata-test
+# docker compose
+up:
+	docker-compose up -d --build
 
-# resetdb: down cleandb up
-# 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app \
-# 		sh -c \
-# 			"./scripts/wait-for pg:5432 -- \
-# 			yarn run sequelize db:migrate && \
-# 			yarn run sequelize db:seed:all"
+ssh:
+	docker-compose exec app /bin/sh
 
-# up:
-# 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) up -d --build
+down:
+	docker-compose down
 
-# sh:
-# 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) exec app /bin/sh
+clean-db:
+	rm -rf pgdata-development pgdata-test
 
-# down:
-# 	docker-compose -f $(CONFIG_FILE_DEV) -p $(PROJECT_NAME_DEV) down
-
-# push:
-# 	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) build && \
-# 	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) push
-
-# down-prod:
-# 	docker-compose -f $(CONFIG_FILE_PROD) -p $(PROJECT_NAME_PROD) down
+# kubernetes
+kube:
+	docker build -t ddn . && \
+	kubectl apply -f ./deployment
