@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  selector:
+    matchLabels:
+      app: app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: ddn:latest
+          imagePullPolicy: Never
+          command:
+            - node
+          args:
+            - index.js
+          env:
+            - name: NODE_PATH
+              value: "."
+            - name: NODE_ENV
+              value: production
+            - name: SEQUELIZE_USER
+              value: andrewyan
+            - name: SEQUELIZE_PASSWORD
+              value: "123456"
+            - name: SEQUELIZE_DB
+              value: mydb_production
+            - name: SEQUELIZE_HOST
+              value: "pg-service.default"
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    app: app
+  ports:
+    - name: app
+      port: 8080
+      targetPort: 8080
+      protocol: TCP

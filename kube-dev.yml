@@ -85,22 +85,22 @@ spec:
       volumes:
         - name: code
           hostPath:
-            path: /Users/zushenyan/Documents/github/deploy-docker-node
+            path: /Users/andrewyan/Desktop/github/deploy-docker-node
         - name: pg
           hostPath:
-            path: /Users/zushenyan/Documents/github/deploy-docker-node/pgdata-development
+            path: /Users/andrewyan/Desktop/github/deploy-docker-node/pgdata-development
         - name: pg-test
           hostPath:
-            path: /Users/zushenyan/Documents/github/deploy-docker-node/pgdata-test
+            path: /Users/andrewyan/Desktop/github/deploy-docker-node/pgdata-test
         - name: nginx-config
           hostPath:
-            path: /Users/zushenyan/Documents/github/deploy-docker-node/nginx/dev/nginx.conf
+            path: /Users/andrewyan/Desktop/github/deploy-docker-node/nginx/dev/nginx.conf
         - name: nginx-crt
           hostPath:
-            path: /Users/zushenyan/Documents/github/deploy-docker-node/nginx/dev/nginx-selfsigned.crt
+            path: /Users/andrewyan/Desktop/github/deploy-docker-node/nginx/dev/nginx-selfsigned.crt
         - name: nginx-key
           hostPath:
-            path: /Users/zushenyan/Documents/github/deploy-docker-node/nginx/dev/nginx-selfsigned.key
+            path: /Users/andrewyan/Desktop/github/deploy-docker-node/nginx/dev/nginx-selfsigned.key
 ---
 apiVersion: v1
 kind: Service
