@@ -3,7 +3,9 @@ const { sequelize } = require('models');
 
 const PORT = process.env.PORT || 8080;
 
-const server = app.listen(PORT, () => {
+let server;
+
+server = app.listen(PORT, () => {
   console.log(`listening on port ${PORT}...`);
 });
 
@@ -14,7 +16,10 @@ const handleShutdown = (err) => {
     console.log(err);
     process.exit(1);
   }
-  server.close(async () => {
+  if (server) {
+    server.close(() => console.log('server closed.'));
+  }
+  (async () => {
     try {
       console.log('closing DB...');
       await sequelize.close();
@@ -22,10 +27,9 @@ const handleShutdown = (err) => {
     } catch (e) {
       console.log(e);
     } finally {
-      console.log('server closed.');
       process.exit(0);
     }
-  });
+  })();
 };
 
 process.on('SIGINT', handleShutdown);

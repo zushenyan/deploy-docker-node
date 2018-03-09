@@ -33,5 +33,22 @@ clean-db:
 
 # kubernetes
 kube:
+	@eval $$(minikube docker-env) && \
+	make kube-delete; \
+	make kube-create
+
+kube-migrate:
+	kubectl exec $(shell kubectl get pods -l app=app -o name --field-selector=status.phase==Running | head -n 1 | sed 's/pods\///') yarn run seed
+
+kube-create:
 	docker build -t ddn . && \
-	kubectl apply -f ./deployment
+	kubectl create -f ./k8s/deployments -f ./k8s/secrets -f ./k8s/configmaps
+
+kube-delete:
+	kubectl delete service app-service nginx-service pg-service; \
+	kubectl delete deployment app nginx pg; \
+	kubectl delete secrets nginx-ssl; \
+	kubectl delete configmap nginx-conf
+
+kube-url:
+	minikube service nginx-service --url

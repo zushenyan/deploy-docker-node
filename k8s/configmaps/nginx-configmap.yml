@@ -15,10 +15,10 @@ data:
 
       server {
         listen              80;
-        # listen              443;
-        # ssl                 on;
-        # ssl_certificate     /etc/ssl/certs/nginx-selfsigned.crt;
-        # ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
+        listen              443;
+        ssl                 on;
+        ssl_certificate     /etc/ssl/certs/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
 
         location / {
           proxy_pass http://app-web;
