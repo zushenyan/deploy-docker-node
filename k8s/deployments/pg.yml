@@ -31,7 +31,7 @@ metadata:
   name: pg-service
 spec:
   selector:
-    app: app
+    app: pg
   ports:
     - name: pg
       port: 5432
