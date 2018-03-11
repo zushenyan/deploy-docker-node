@@ -12,18 +12,34 @@ spec:
       labels:
         app: pg
     spec:
+      volumes:
+        - name: pg-data
+          persistentVolumeClaim:
+            claimName:  pg-data-claim
       containers:
         - name: pg
           image: postgres:10.2-alpine
           env:
             - name: POSTGRES_USER
-              value: andrewyan
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: pg-user
             - name: POSTGRES_PASSWORD
-              value: "123456"
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: pg-password
             - name: POSTGRES_DB
-              value: mydb_production
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: pg-db
           ports:
             - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pg-data
 ---
 apiVersion: v1
 kind: Service

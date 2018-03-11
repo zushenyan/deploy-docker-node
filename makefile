@@ -1,23 +1,3 @@
-# all:
-# 	make build && \
-# 	make clean; \
-# 	make run
-
-# ssh:
-# 	kubectl exec -it $(shell kubectl get pods -l apps=ddn -o name --field-selector=status.phase==Running | sed 's/pods\///') sh
-
-# build:
-# 	docker build -t ddn .
-
-# run:
-# 	kubectl create -f kube-dev.yml
-
-# clean:
-# 	kubectl delete services,deployments ddn
-
-# prune:
-# 	yes | docker system prune -a && yes | docker volume prune
-
 # docker compose
 up:
 	docker-compose up -d --build
@@ -38,17 +18,36 @@ kube:
 	make kube-create
 
 kube-migrate:
-	kubectl exec $(shell kubectl get pods -l app=app -o name --field-selector=status.phase==Running | head -n 1 | sed 's/pods\///') yarn run seed
+	kubectl exec $(shell kubectl get pods -l app=job -o name --field-selector=status.phase==Running | sed 's/pods\///') yarn run seed
 
 kube-create:
-	docker build -t ddn . && \
-	kubectl create -f ./k8s/deployments -f ./k8s/secrets -f ./k8s/configmaps
+	make kube-build && \
+	make kube-create-configmaps; \
+	make kube-create-secrets; \
+	kubectl create \
+		-f ./k8s/deployments \
+		-f ./k8s/config-maps \
+		-f ./k8s/persistent-volume \
+		-f ./k8s/persistent-volume-claim \
+
+kube-build:
+	docker build -t ddn .
+
+kube-create-configmaps:
+	kubectl create configmap nginx-conf --from-file ./nginx/prod/nginx.conf -o yaml | kubectl replace -f -
+
+kube-create-secrets:
+	kubectl create secret generic nginx-ssl \
+		--from-file=./nginx/prod/nginx-selfsigned.crt \
+		--from-file=./nginx/prod/nginx-selfsigned.key
 
 kube-delete:
 	kubectl delete service app-service nginx-service pg-service; \
-	kubectl delete deployment app nginx pg; \
+	kubectl delete deployment app nginx pg job; \
 	kubectl delete secrets nginx-ssl; \
-	kubectl delete configmap nginx-conf
+	kubectl delete configmap nginx-conf config; \
+	kubectl delete pv pg-data; \
+	kubectl delete pvc pg-data-claim
 
 kube-url:
 	minikube service nginx-service --url

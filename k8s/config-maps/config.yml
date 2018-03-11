@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  pg-user: andrewyan
+  pg-password: "123456"
+  pg-db:  mydb_production
