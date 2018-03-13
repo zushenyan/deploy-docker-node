@@ -48,5 +48,5 @@ services:
       - app
     volumes:
       - ./nginx/dev/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/dev/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt
-      - ./nginx/dev/nginx-selfsigned.key:/etc/ssl/certs/nginx-selfsigned.key
+      - ./nginx/dev/tls.crt:/etc/ssl/certs/tls.crt
+      - ./nginx/dev/tls.key:/etc/ssl/certs/tls.key

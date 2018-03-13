@@ -9,10 +9,10 @@ const server =
     .get('/', async (req, res) => {
       try {
         const result  = await User.findAll();
-        const queryResult = result.map(row => row.get());
+        const data    = result.map(row => row.get());
         const payload = {
+          data,
           host: os.hostname(),
-          ...queryResult
         };
         res.json(payload);
       } catch (e) {
