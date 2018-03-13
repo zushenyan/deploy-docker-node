@@ -11,7 +11,7 @@
     "dev": "NODE_PATH=. nodemon --inspect=0.0.0.0:1337 index.js",
     "start": "NODE_PATH=. node index.js",
     "lint": "eslint .",
-    "test": "NODE_PATH=. NODE_ENV=test jest --watch",
+    "test": "NODE_PATH=. NODE_ENV=test mocha -w",
     "seed": "sequelize db:migrate && sequelize db:seed:all"
   },
   "dependencies": {
@@ -23,10 +23,11 @@
     "sequelize-cli": "^3.2.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^4.17.0",
     "eslint-plugin-jest": "^21.12.0",
     "faker": "^4.1.0",
-    "jest": "^22.2.2",
+    "mocha": "^5.0.4",
     "nodemon": "^1.14.12",
     "supertest": "^3.0.0"
   }
